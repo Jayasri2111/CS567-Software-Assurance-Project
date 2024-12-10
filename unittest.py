@@ -60,3 +60,12 @@ class TestVehicleManager(unittest.TestCase):
     def test_remove_vehicle(self):
         self.manager.remove_vehicle("C123")
         self.assertIsNone(self.manager.get_vehicle_by_id("C123"))
+
+    def test_invalid_fuel_efficiency(self):
+        with self.assertRaises(ValueError):
+            vehicle = Vehicle("V124", "Nissan", "Altima", 2018, "Green", 0)
+            vehicle.calculate_fuel_consumed(100)
+
+    def test_non_existent_vehicle(self):
+        manager = VehicleManager()
+        self.assertIsNone(manager.get_vehicle_by_id("NonExistentID"))
