@@ -1,0 +1,99 @@
+import io
+import sys
+from contextlib import redirect_stdout
+
+# Assuming your main code is inside a module named `vehicle_management`
+from vehicle_management import VehicleManager, Car, Truck
+
+def test_vehicle_manager():
+    # Create an instance of VehicleManager
+    manager = VehicleManager()
+
+    # Redirect stdout to capture the print statements
+    captured_output = io.StringIO()
+    with redirect_stdout(captured_output):
+        
+        # Test case 1: Add a Car
+        print("Test Case 1: Add a Car")
+        car = Car("C123", "Toyota", "Corolla", 2020, "Red", 15.0, 4, True)
+        manager.add_vehicle(car)
+        assert "Vehicle with ID C123 added successfully." in captured_output.getvalue()
+        captured_output.truncate(0)
+        captured_output.seek(0)
+        
+        # Test case 2: Add a Truck
+        print("Test Case 2: Add a Truck")
+        truck = Truck("T123", "Ford", "F-150", 2022, "Blue", 10.0, 3000)
+        manager.add_vehicle(truck)
+        assert "Vehicle with ID T123 added successfully." in captured_output.getvalue()
+        captured_output.truncate(0)
+        captured_output.seek(0)
+
+        # Test case 3: Display all vehicles
+        print("Test Case 3: Display All Vehicles")
+        manager.display_all_vehicles()
+        assert "Vehicle ID: C123" in captured_output.getvalue()
+        assert "Vehicle ID: T123" in captured_output.getvalue()
+        captured_output.truncate(0)
+        captured_output.seek(0)
+
+        # Test case 4: Calculate fuel consumption for Car
+        print("Test Case 4: Calculate Fuel Consumption for Car")
+        manager.calculate_fuel_consumption("C123", 150)
+        assert "Fuel consumed for 150.0 km: 10.00 liters." in captured_output.getvalue()
+        captured_output.truncate(0)
+        captured_output.seek(0)
+
+        # Test case 5: Add service record for Car
+        print("Test Case 5: Add Service Record for Car")
+        manager.add_service_record("C123", "2024-12-06", "Oil Change", 50.0)
+        assert "Service record added for vehicle C123." in captured_output.getvalue()
+        captured_output.truncate(0)
+        captured_output.seek(0)
+
+        # Test case 6: Display service history for Car
+        print("Test Case 6: Display Service History for Car")
+        manager.display_vehicle_service_history("C123")
+        assert "Service History for C123:" in captured_output.getvalue()
+        assert "Oil Change" in captured_output.getvalue()
+        captured_output.truncate(0)
+        captured_output.seek(0)
+
+        # Test case 7: Remove a vehicle
+        print("Test Case 7: Remove Vehicle")
+        manager.remove_vehicle("T123")
+        assert "Vehicle with ID T123 removed successfully." in captured_output.getvalue()
+        captured_output.truncate(0)
+        captured_output.seek(0)
+
+        # Test case 8: Display all vehicles after removal
+        print("Test Case 8: Display All Vehicles After Removal")
+        manager.display_all_vehicles()
+        assert "Vehicle ID: C123" in captured_output.getvalue()
+        assert "Vehicle ID: T123" not in captured_output.getvalue()  # T123 should be removed
+        captured_output.truncate(0)
+        captured_output.seek(0)
+
+        # Test case 9: Total maintenance cost
+        print("Test Case 9: Total Maintenance Cost")
+        manager.total_maintenance_cost()
+        assert "Total maintenance cost for all vehicles: $50.00" in captured_output.getvalue()
+
+        # Test case 10: Update vehicle info
+        print("Test Case 10: Update Vehicle Info")
+        manager.update_vehicle_info("C123", color="Green", fuel_efficiency=16.0)
+        assert "Vehicle C123 info updated successfully." in captured_output.getvalue()
+        captured_output.truncate(0)
+        captured_output.seek(0)
+
+        # Test case 11: Display vehicle info
+        print("Test Case 11: Display Vehicle Info")
+        manager.display_vehicle_info("C123")
+        assert "Vehicle ID: C123" in captured_output.getvalue()
+        assert "Color: Green" in captured_output.getvalue()
+        assert "Fuel Efficiency: 16.0 km/l" in captured_output.getvalue()
+    
+    print("All test cases passed!")
+
+# Run the test
+test_vehicle_manager()
